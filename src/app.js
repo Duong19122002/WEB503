@@ -1,20 +1,29 @@
 import express from 'express';
-import morgan from 'morgan';
 import cors from 'cors';
-import productRoute from './routes/product'
+import morgan from 'morgan';
 import mongoose from 'mongoose';
 
+import productRoute from './routes/product';
+import categoryRoute from './routes/category';
+import authRoute from './routes/auth';
 const app = express();
-app.use(morgan("tiny"));
-app.use(express.json());
+
+// middleware
 app.use(cors());
+app.use(morgan("tiny"));
+app.use(express.json())
 
+// route
 app.use("/api",productRoute);
-
-mongoose.connect("mongodb://localhost:27017/web16309")
-.then(()=>console.log("Connect db successfully"))
-.catch(error=>console.log(error))
+app.use("/api",categoryRoute);
+app.use("/api",authRoute);
+// connnect database
+mongoose.connect('mongodb://localhost:27017/web16309')
+    .then(() => console.log("Kết nối db thành công"))
+    .catch((error) => console.log(error));
+    
+// connection
 const PORT = 8000;
 app.listen(PORT, () => {
-    console.log(`Server is running port:${PORT}`)
+    console.log("Server is running port", PORT);
 })
