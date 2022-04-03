@@ -1,6 +1,5 @@
-import Category from '../models/category';
-import Product from '../models/product';
-
+import Category from "../models/Category";
+import product from "../models/product";
 export const create = async (req, res) => {
     try {
         const category = await new Category(req.body).save()
@@ -14,7 +13,7 @@ export const read = async ( req, res) => {
     const condition = {_id: req.params.id}
     try {
         const category = await Category.findOne(condition).exec();
-        const products = await Product.find({category}).select("-category").exec();
+        const products = await product.find({category}).select("-category").exec();
         res.json({
             category,
             products

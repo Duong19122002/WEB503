@@ -1,29 +1,32 @@
-import express from 'express';
-import cors from 'cors';
-import morgan from 'morgan';
-import mongoose from 'mongoose';
+import express from "express";
 
-import productRoute from './routes/product';
-import categoryRoute from './routes/category';
-import authRoute from './routes/auth';
+import cors from 'cors';// cap quyen
+import morgan from 'morgan'; // hien thi thong bao
+import mongoose from "mongoose";
+
+import router from '../routers/product'
+import news from "../routers/new";
+import auth from "../routers/auth";
+import category from "../routers/category";
+import user from "../routers/user";
 const app = express();
+app.use(cors()); //middrewe
+app.use(morgan('tiny')); //hiển thị log trên server 
+app.use(express.json()); //párser kieu du lieu 
+// app.use("/api",router);
 
-// middleware
-app.use(cors());
-app.use(morgan("tiny"));
-app.use(express.json())
-
-// route
-app.use("/api",productRoute);
-app.use("/api",categoryRoute);
-app.use("/api",authRoute);
-// connnect database
-mongoose.connect('mongodb://localhost:27017/web16309')
-    .then(() => console.log("Kết nối db thành công"))
-    .catch((error) => console.log(error));
-    
-// connection
-const PORT = 8000;
-app.listen(PORT, () => {
-    console.log("Server is running port", PORT);
-})
+//router
+app.use("/api",news);
+app.use("/api",router);
+app.use("/api",user);
+app.use("/api",auth);
+app.use("/api",category)
+//connect datebase
+mongoose.connect('mongodb://localhost:27017/webb16309')
+.then(()=>console.log("kết nối thành công"))
+.catch((error)=>console.log(error));
+//connection
+const port = 3001;
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
